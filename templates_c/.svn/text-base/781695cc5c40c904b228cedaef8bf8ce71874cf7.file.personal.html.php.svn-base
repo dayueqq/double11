@@ -1,0 +1,220 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-09-19 06:32:16
+         compiled from "personal.html" */ ?>
+<?php /*%%SmartyHeaderCode:14714523a9a701fd3b2-68104858%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '781695cc5c40c904b228cedaef8bf8ce71874cf7' => 
+    array (
+      0 => 'personal.html',
+      1 => 1379572334,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '14714523a9a701fd3b2-68104858',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>印迹 | <?php echo $_smarty_tpl->getVariable('info')->value['author'];?>
+ 个人主页</title>
+<link href="css/personal.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+
+</head>
+
+<body bgcolor="#f1f1f1">
+   <!--  第一部分  -->
+   <div id="head">
+       <div>
+           <div style="margin-left:20px; line-height:50px; position:absolute;">
+               <a href="http://www.yinjitee.com/login.php" style="color:#EEE; font-size:14px; float:left">登陆</a><img style="float:left" src="img/split.png" />
+               <a href="http://www.yinjitee.com/login.php" style="color:#EEE; font-size:14px; float:left">注册</a><img style="float:left" src="img/split.png" />
+           </div>
+           <div style="right:0px; position:absolute;">
+               <div style="margin-top:25px; float:left">
+                   <a href="#" style="color:#FFF; font-weight:bold; font-size:16px;"><?php echo $_smarty_tpl->getVariable('name')->value;?>
+</a>
+               </div>
+               <span style="background:#FF4137; color:#FFF; line-height:20px; font-size:12px; float:left; margin-top:10px; margin-right:5px">&nbsp;7&nbsp;</span>
+               <a href="personal.php?personid=<?php echo $_smarty_tpl->getVariable('personid')->value;?>
+"><img src="<?php echo $_smarty_tpl->getVariable('headpic')->value;?>
+" height="50" width="50"/></a>
+           </div>
+           <div align="center">
+               <a href="http://www.yinjitee.com/"><img src="img/headline logo.png" /></a>
+           </div>
+       </div>
+   </div>  
+
+
+   <div id="photo"><img src="<?php echo $_smarty_tpl->getVariable('info')->value['authorpic'];?>
+" width="100%" height="100%"  /></div>
+   <div id="photo2">
+        <div id="photo1"><?php echo $_smarty_tpl->getVariable('info')->value['author'];?>
+</div>
+        <div id="photo1">广东广州</div>
+        <div id="photo1">微博：<a href="http://weibo.com/u/<?php echo $_smarty_tpl->getVariable('info')->value['weiboid'];?>
+">http://weibo.com/u/<?php echo $_smarty_tpl->getVariable('info')->value['weiboid'];?>
+</a></div>
+   </div>
+   <!--  第二部分  -->
+   <div id="bannar">
+	  
+
+ <div id="aa" style="margin-top:55.4px; width:22.1%; font:Verdana, Arial, Helvetica, sans-serif; ">发布的作品</div>
+   <div style="width:100%; margin-left:auto; margin-right:auto;"><img style="width:100%" src="img/spit-line.png" /></div>
+   <?php unset($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['name'] = 'person_id';
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['loop'] = is_array($_loop=$_smarty_tpl->getVariable('person')->value) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['show'] = true;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['max'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['loop'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['step'] = 1;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['start'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['step'] > 0 ? 0 : $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['loop']-1;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['show']) {
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['total'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['loop'];
+    if ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['total'] == 0)
+        $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['show'] = false;
+} else
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['total'] = 0;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['show']):
+
+            for ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['start'], $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration'] = 1;
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration'] <= $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['total'];
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index'] += $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['step'], $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration']++):
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['rownum'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index_prev'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index'] - $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index_next'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['index'] + $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['first']      = ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration'] == 1);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['last']       = ($_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['iteration'] == $_smarty_tpl->tpl_vars['smarty']->value['section']['person_id']['total']);
+?>
+       <div class="ab">
+           <div class="ae">
+               <a target="_blank" href="picture.php?id=<?php echo $_smarty_tpl->getVariable('person')->value[$_smarty_tpl->getVariable('smarty')->value['section']['person_id']['index']]['sourceid'];?>
+"><img src="<?php echo $_smarty_tpl->getVariable('person')->value[$_smarty_tpl->getVariable('smarty')->value['section']['person_id']['index']]['path'];?>
+"/></a>
+           </div>
+           <div class="others">
+               <li class="fav"><a href=""><?php echo $_smarty_tpl->getVariable('person')->value[$_smarty_tpl->getVariable('smarty')->value['section']['person_id']['index']]['love'];?>
+</a></li>
+               <li class="cmnt"><a href=""><?php echo $_smarty_tpl->getVariable('person')->value[$_smarty_tpl->getVariable('smarty')->value['section']['person_id']['index']]['says'];?>
+</a></li>
+               <li class="view"><a href=""><?php echo $_smarty_tpl->getVariable('person')->value[$_smarty_tpl->getVariable('smarty')->value['section']['person_id']['index']]['views'];?>
+</a></li>
+           </div>
+       </div>
+   <?php endfor; endif; ?>   
+
+   
+   <div style="width:100%; margin-left:auto; margin-right:auto; float:right; margin-top:30px; margin-bottom:30px; display:block; text-align:center; vertical-align:middle; line-height:24px"><img style="width:100%" src="img/spit-line.png" /></div>
+   
+   
+   </div>
+   
+   
+    <div id="bannbr">
+	 <div id="aa" style="margin-top:55.4px; width:40px;" >关于</div>
+   <div style="width:100%; margin-left:auto; margin-right:auto;"><img style="width:100%" src="img/spit-line.png" /></div>
+   <?php echo $_smarty_tpl->getVariable('info')->value['about'];?>
+
+   </div>
+
+   
+   <!--  第五部分  搜索按钮 -->
+   <div class="search" onmouseout="disSearch()">
+       <img style="float:right" src="img/search.png" onmouseover="showSearch()" />
+       <div id="search">
+           <input style="height:22px; line-height:22px" id="searchCont" type="text" />
+           <div id="tips" style="width:100%; height:200px; border:1px solid #000; display:none">
+           </div>
+       </div>
+   </div>		
+   <!--  第六部分  返回按钮 -->
+   <div id="gotopbtn"></div>
+
+<script type="text/javascript">
+$(function(){
+	<!--返回顶部-->
+	$(window).scroll(function(){
+		$(window).scrollTop()>400 ? $("#gotopbtn").fadeIn(1500).click(function(){
+			$(window).scrollTop(0);
+		}):$("#gotopbtn").fadeOut(1500);	
+	});
+	
+	
+	$('.ab').each(function(i){
+		if(i%3==2){
+			$(this).css('marginRight',-10);
+		}
+	});  
+	
+	var boxheight=$('.ae').height();  // 获得图片盒子的高度
+	var boxwidth=$('.ae').width();  // 获得图片盒子的宽度
+	var imgtop='-75px';  //设置图片的上边高度
+	
+	$('.ae a img').each(function(){
+		  $(this).width(boxwidth);
+		  $(this).css('marginTop',imgtop);
+	});  
+});
+
+
+</script>
+
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+var winHeight;
+
+var h;
+
+ function owinHeight(){//当前窗口的height
+  
+  if (window.innerHeight){
+      winHeight = window.innerHeight
+  }else if ((document.body) && (document.body.clientHeight)){
+      winHeight = document.body.clientHeight
+  }
+  if (document.documentElement  && document.documentElement.clientHeight){
+      winHeight = document.documentElement.clientHeight;
+  }
+ 
+  
+  var h = document.body.clientWidth;
+
+	 $('#photo').css('width',0.0808*h);
+	 $('#photo').css('height',0.0808*h);
+	 $('#photo1').css('height',0.0269*h);
+	 $('#photo2').css('width',0.8*h);
+	 $('#photo2').css('height',0.0808*h);
+	 $('.ab').css('height',0.1783*h);
+	 $('.ab').css('width',0.1783*h);
+  return winHeight; 
+}
+
+	owinHeight();                  //调用函数，获取数值
+    window.onresize=owinHeight;
+
+   $(window).resize(function(){  //屏幕调整大小时加载
+
+	 var h = document.body.clientWidth;
+	 $('#photo').css('width',0.0808*h);
+	 $('#photo').css('height',0.0808*h);
+	 $('#photo1').css('height',0.0269*h);
+	 $('#photo2').css('width',0.8*h);
+	 $('#photo2').css('height',0.0808*h);
+	 $('.ab').css('height',0.1783*h);
+	 $('.ab').css('width',0.1783*h);
+})	  		  
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-09-19 05:56:02
+         compiled from "page.html" */ ?>
+<?php /*%%SmartyHeaderCode:10348523a91f2474aa6-37997182%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    'f3a90645adea291f70be63636c80392fc1b2d78b' => 
+    array (
+      0 => 'page.html',
+      1 => 1379569816,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '10348523a91f2474aa6-37997182',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<?php unset($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['name'] = 'show_id';
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'] = is_array($_loop=$_smarty_tpl->getVariable('show')->value) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show'] = true;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['max'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'] = 1;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['start'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'] > 0 ? 0 : $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop']-1;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show']) {
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'];
+    if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] == 0)
+        $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show'] = false;
+} else
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] = 0;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show']):
+
+            for ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['start'], $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] = 1;
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] <= $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'];
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] += $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'], $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration']++):
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['rownum'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index_prev'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] - $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index_next'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] + $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['first']      = ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] == 1);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['last']       = ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] == $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total']);
+?>
+            <div class="masonry_brick">
+                <div class="group1">
+                    <div class="box01">
+                        <div class="imgbox">
+                            <img alt="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['sourceid'];?>
+" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['path'];?>
+"/>
+                        </div>
+                        <a target="_blank" href="./picture.php?id=<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['sourceid'];?>
+">
+                            <div class="box03">
+                                <div class="title"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['title'];?>
+</div>
+                                <div class="cont"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['detail'];?>
+</div>
+                                <div class="date"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['time'];?>
+</div>  
+                            </div>
+                        </a>
+                    </div>
+                    <div class="others">
+                        <li class="fav"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['love'];?>
+</a></li>
+                        <li class="cmnt"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['says'];?>
+</a></li>
+                        <li class="view"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['views'];?>
+</a></li>
+                    </div>
+                </div>
+                <div class="group2">
+                    <a target="_new" href="./personal.php?personid=<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['authorid'];?>
+">
+                        <div class="headpic"><img height="100%" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['authorpic'];?>
+" /></div>
+                        <div class="author"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['author'];?>
+</div>
+                    </a>
+                </div>
+                <img class="clothpath" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['clothpath'];?>
+" />
+                
+            </div><!--item end-->
+         <?php endfor; endif; ?>

@@ -1,0 +1,283 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-08-25 12:15:37
+         compiled from "222.html" */ ?>
+<?php /*%%SmartyHeaderCode:20407521984e928b3b7-95765517%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '72563dfb2a6d7e14bac93d33ec044347719ace85' => 
+    array (
+      0 => '222.html',
+      1 => 1377393491,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '20407521984e928b3b7-95765517',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>印迹 | 作品展示</title>
+<link href="css/picture.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $_smarty_tpl->getVariable('jsonfile')->value;?>
+"></script>
+<script type="text/javascript">
+function init(){
+	/* 第二部分   左边图片展示  作者信息*/
+	var contWidth=$('.content').width();
+	$('.content').height(contWidth*0.43);
+	
+	/* 第二部分   左边图片展示  显示图片信息*/
+	var width=$('.picCont').width();
+	$('.picCont').height(width*0.8);
+	
+	var height=$('.left').height();
+	$('.bigBox').css('marginTop',height*0.01);
+	
+	var picBoxWidth=$('.picBox').width();  /* 确定图片展示区的高度 */
+	var picBoxHeight=picBoxWidth*0.63;
+	$('.picBox').height(picBoxHeight);
+	
+	$('#rightImgBox').width($('#rightImg').width());   /* 确定 左右2个图片区的宽度 */
+	var leftImgWidth=$('.picBox').width()-$('#rightImg').width()-2;
+	$('#leftImgBox').width(leftImgWidth);
+	//changeSize();
+	
+	
+	/* 确定更多图片展示区的高度 */
+	$('.otherBox').height($('.otherBox').parent().height()-picBoxHeight);
+	$('.imgbox').height($('.otherBox').height()*0.8);
+	$('.imgbox').width($('.imgbox').height()*1.3);
+	$('.imgbox').css('marginTop',$('.otherBox').height()*0.1);
+	
+	//改变 Imgbox 中图片的大小
+	var boxheight=$('.imgbox').height(); 
+	var boxwidth=$('.imgbox').width();
+	$('.imgbox img').each(function(){
+		if($(this).width()>$(this).height()){
+			$(this).css('height',boxheight);
+			var left=(boxwidth-$(this).width())/2;
+			$(this).css('marginLeft',left);
+		}else{
+			$(this).css('width',boxwidth);
+			var top=(boxheight-$(this).height())/2;
+			$(this).css('marginTop',top);
+		}    
+    });
+}
+function changeSize(){
+	var leftImgWidth=$('#leftImgBox').width();
+	if($('#leftImg').width()>$('#leftImg').height()){  /* 将左侧图片进行适当调整 */
+		$('#leftImg').css('height',$('#leftImgBox').height());
+		var left=-($('#leftImg').width()-leftImgWidth)/2;
+		$('#leftImg').css('marginLeft',left);
+	}else{
+	
+		$('#leftImg').css('width',leftImgWidth);
+		var top=-($('#leftImg').height()-$('#leftImgBox').height())/2;
+		$('#leftImg').css('marginTop',top);
+	}
+}
+function assignOther(){
+   var num=datajson.length;
+   $('.imgbox img').each(function(i){
+	   if(i<num){
+	       $(this).attr('src',datajson[i].path);
+	   }else{
+		   $(this).parent().css('visibility','hidden');
+	   }
+   });
+}
+function assignPic(index){
+	$('#authorPic').attr('src',datajson[index].authorpic);
+	$('#contTitle').html(datajson[index].title);
+	$('#contAuthor').html(datajson[index].author);
+	$('#leftImg').attr('src',datajson[index].path);
+	$('#cache').attr('src',datajson[index].path);  //放进缓存中
+	$('#rightImg').attr('src',datajson[index].clothpath);
+	$('#loves').html(datajson[index].love);
+	$('#says').html(datajson[index].says);
+	$('#views').html(datajson[index].views);
+	$('.detail').html(datajson[index].detail);
+	if(index==0){
+		$('.box01 img:eq(0)').css('visibility','hidden');
+	}else{
+		$('.box01 img:eq(0)').css('visibility','visible');
+	}
+	if(index==datajson.length-1){
+		$('.box01 img:eq(1)').css('visibility','hidden');
+	}else{
+		$('.box01 img:eq(1)').css('visibility','visible');
+	}
+	$('.box01 img:eq(0)').attr('onClick',"assignPic("+(index-1)+")");
+	$('.box01 img:eq(1)').attr('onClick',"assignPic("+(index+1)+")");
+	changeSizeOf(index);
+}
+function changeSizeOf(index){
+	var leftImgWidth=$('#leftImgBox').width();
+	var rate=$('#cache').width()/$('#cache').height();
+	if(rate>1){  /* 将左侧图片进行适当调整 */
+	//alert(rate);
+	$('#leftImg').css('marginLeft',0);
+		$('#leftImg').css('height',$('#leftImgBox').height());
+		$('#leftImg').css('width',$('#leftImg').height()*rate);
+		alert("width"+$('#leftImg').width());
+		var left=-($('#leftImg').width()-leftImgWidth)/2;
+		$('#leftImg').css('marginLeft',left);
+	}else{
+	    $('#leftImg').css('marginTop',0);
+		$('#leftImg').css('width',leftImgWidth);
+		$('#leftImg').css('height',$('#leftImg').width()/rate);
+		alert("height"+$('#leftImg').height());
+		var top=-($('#leftImg').height()-$('#leftImgBox').height())/2;
+		$('#leftImg').css('marginTop',top);
+	}
+}
+</script>
+</head>
+<body>
+   <!--  第一部分  -->
+   <div id="head">
+       <div>
+           <div style="margin-left:20px; line-height:50px; position:absolute;">
+               <a href="http://www.baidu.com" style="color:#EEE; font-size:14px; float:left">登陆</a><img style="float:left" src="img/split.png" />
+               <a href="http://www.baidu.com" style="color:#EEE; font-size:14px; float:left">注册</a><img style="float:left" src="img/split.png" />
+           </div>
+           <div style="right:0px; position:absolute;">
+               <div style="margin-top:25px; float:left">
+                   <a href="#" style="color:#FFF; font-weight:bold; font-size:16px;"><?php echo $_smarty_tpl->getVariable('name')->value;?>
+</a>
+               </div>
+               <span style="background:#FF4137; color:#FFF; line-height:20px; font-size:12px; float:left; margin-top:10px; margin-right:5px">&nbsp;7&nbsp;</span>
+               <a href="personal.php?personid=<?php echo $_smarty_tpl->getVariable('personid')->value;?>
+"><img src="<?php echo $_smarty_tpl->getVariable('headpic')->value;?>
+" height="50" width="50"/></a>
+           </div>
+           <div align="center">
+               <a href="index.php"><img src="img/headline logo.png" /></a>
+           </div>
+       </div>
+   </div>  
+   
+   <!--  第二部分  --><img id="cache" src="" style="display:none">
+   <div class="content">
+      <!--  第二部分  左边部分-->
+       <div class="left">
+            <div style="height:11%; margin-left:11%; overflow:hidden">
+                <div class="authorCont">
+                    <img id="authorPic" style="float:left; border-radius:6px" height="100%" src="" />
+                    <div style="float:left; margin-left:15px">
+                        <div id="contTitle" style="font-size:20px; font-weight:bold"></div>
+                        <div style="font-size:16px; color:#68B0D5; line-height:30px"><span style="color:#AAA">作者</span>&nbsp;&nbsp;<span id="contAuthor"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bigBox">
+                <div class="box01"><img src="img/prev.png" width="100%" onClick="assignPic(0)" /></div>
+                <div class="box02">
+                    <div class="picCont">
+                          <div style="width:94%; height:92%; position:relative;top:20px; margin-left:auto; margin-right:auto">
+                              <div class="picBox">
+                                  <div id="leftImgBox">
+                                      <img id="leftImg" src="" />
+                                  </div>
+                                  <div id="rightImgBox">
+                                      <img id="rightImg" height="100%" src="" />
+                                  </div>
+                              </div>
+                              <div class="otherBox">
+                                  <div class="imgbox"><img src="" /></div>
+                                  <div class="imgbox"><img src="" /></div>
+                                  <div class="imgbox"><img src="" /></div>
+                                  <div class="imgbox"><img src="" /></div>
+                                  <div class="imgbox"><img src="" /></div>
+                              </div>
+                          </div>
+                      </div>
+                </div>
+                <div class="box01"><img src="img/next.png" width="100%" onClick="assignPic(1)" /></div>
+            </div>
+       </div>
+       
+       <!--  第二部分  中间部分-->
+       <div class="middle">
+           <div class="loves"><img src="img/aixin.png" width="20" />&nbsp;&nbsp;<span id="loves"></span></div>
+           <div class="says"><img src="img/pinglunhui.png" width="20" />&nbsp;&nbsp;<span id="says"></span></div>
+           <div class="views"><img src="img/prevw.png" width="20" />&nbsp;&nbsp;<span id="views"></span></div>
+           <div style="font-size:16px; line-height:50px; font-weight:bold; color:#222">详情</div>
+           <div class="detail" style="color:#222; font-size:14px"></div>
+           <div class="box01">
+               <span style="font-size:30px; font-weight:bold">50<span style="font-size:18px">&nbsp;元</span></span>
+               <div style="float:right; margin-top:8px"><img src="img/car.png" width="100"/></div>
+               <div style="border:1px solid #666; width:99%"></div>
+               <div class="box02"><a href=""><img src="img/aixinred.png" width="40">点赞</a></div>
+               <div class="box02" style="float:right"><img src="http://simg.sinajs.cn/blog7style/images/common/share.gif" width="40">分享</div>
+           </div>
+       </div>
+       
+       <!--  第三部分  右边部分-->
+       <div class="right">
+           <img src="img/pinglun.png" width="40">
+       </div>
+   </div>
+   
+<!--  第七部分  发表评论-->
+   <div style="width:56%; margin:30px auto; display:none; overflow:hidden; zoom:1;">
+     <form action="updiscuss.php?picid=<?php echo $_smarty_tpl->getVariable('info')->value['weiboid'];?>
+" method="post" enctype="multipart/form-data">
+       <textarea name="discuss" style="width:100%; height:100px;" onFocus="showDis(this)" onBlur="disDis(this)">发表评论</textarea>
+       <div style="float:right">
+           <input name="synchro" type="checkbox" checked="true" />同步到微博&nbsp;&nbsp;
+           <input type="submit" value="发表评论" />
+           <input name="file" type="hidden" value="<?php echo $_smarty_tpl->getVariable('info')->value['datafile'];?>
+" />
+       </div>
+     </form>
+   </div>
+<script type="text/javascript">
+   
+$(function(){
+	assignOther();
+	assignPic(0);
+	init();
+
+	$.getJSON("<?php echo $_smarty_tpl->getVariable('info')->value['datafile'];?>
+", function(data) {
+		var str='';
+        for(var i=0;i<data.length;i++){
+			str+="<div class='af' align='center'><img src='img/spit-line1.png' /></div><div class='box01'>"+
+          "<div class='circle1'><a href='personal.php?personid="+data[i].personid+"'><img class='ah1' src='"+data[i].headpic+"' width='100px' height='100px'/></a></div>"+
+          "<div class='box02'>"+
+              "<div style='width:100%'>"+
+                  "<div style='float:left'>"+data[i].name+"</div>"+
+                  "<div style='float:right'>"+data[i].time+"</div>"+
+              "</div>"+
+              "<div style='clear:both; margin-top:30px'>"+data[i].cont+"</div>"+
+          "</div>"+
+      "</div>"
+	        $('#bannar1').html(str);
+		}
+		$('.box02').width($('.box01').width()-110);
+    });
+
+});
+   
+   //实现评论框有鼠标点击时，显示空文本框
+   function showDis(obj){
+	   if($(obj).val()=='发表评论'){
+		   $(obj).val('');
+	   }
+   }
+   function disDis(obj){
+	   if($(obj).val()==''){
+		   $(obj).val('发表评论');
+	   }
+   }
+
+</script>
+</body>
+</html>

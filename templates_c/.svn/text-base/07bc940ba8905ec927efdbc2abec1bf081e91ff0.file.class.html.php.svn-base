@@ -1,0 +1,282 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-08-16 19:38:03
+         compiled from "class.html" */ ?>
+<?php /*%%SmartyHeaderCode:23720520e0f1b613a73-71110082%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '07bc940ba8905ec927efdbc2abec1bf081e91ff0' => 
+    array (
+      0 => 'class.html',
+      1 => 1376653081,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '23720520e0f1b613a73-71110082',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>印迹 | 学堂</title>
+<link href="css/class.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+<script src="js/slides.min.jquery.js"></script>
+
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript">
+  <!-- 实现瀑布加载效果的浏览器宽度检测  -->
+    var winWidth;
+    var isWidescreen=screen.width>=1280; 
+    if(isWidescreen){document.write("<style type='text/css'>.demo{width:965px;}</style>");}
+	
+    function findDimensions(){
+		//获取窗口宽度
+		 if (window.innerWidth)
+			   winWidth = window.innerWidth;
+		 else if ((document.body) && (document.body.clientWidth))
+			   winWidth = document.body.clientWidth;
+
+		 imgWidth=0.6*winWidth;
+		 imgHeight=0.425*imgWidth;
+		 $('#banner').height(imgHeight);
+		 $('#slides .prev').css({'top':(imgHeight/2-35)+"px"});     
+		 $('#slides .next').css({'top':(imgHeight/2-35)+"px"});     
+		  
+		 $('#slides .slides_container').find('div').each(function(){
+			 $(this).height(imgHeight);
+			 $(this).width(imgWidth);
+			 $(this).find('img').width(imgWidth);
+			 $(this).find('img').height(imgHeight);
+		 });
+    }
+	findDimensions();                  //调用函数，获取数值
+    window.onresize=findDimensions;
+
+  <!-- 实现相片切换的幻灯片功能  -->	
+	$(function(){
+		$('#slides').slides({
+			preload: true
+		});
+		
+		findDimensions();    //加载屏幕大小，调整画面
+	});
+	
+	
+	<!-- 实现瀑布加载效果  -->
+	function item_masonry(){ 
+		$('.item img').load(function(){ 
+			$('.infinite_scroll').masonry({ 
+				itemSelector: '.masonry_brick',
+				columnWidth:230,
+				gutterWidth:15								
+			});		
+		});
+			
+		$('.infinite_scroll').masonry({ 
+			itemSelector: '.masonry_brick',
+			columnWidth:230,
+			gutterWidth:15								
+		});	
+	}
+	
+	$(function(){
+	
+		function item_callback(){ 
+			
+			$('.item').mouseover(function(){
+				$(this).css('box-shadow', '0 1px 5px rgba(35,25,25,0.5)');
+				$('.btns',this).show();
+			}).mouseout(function(){
+				$(this).css('box-shadow', '0 1px 3px rgba(34,25,25,0.2)');
+				$('.btns',this).hide();		 	
+			});
+			
+			item_masonry();	
+	
+		}
+	
+		item_callback();  
+	
+		$('.item').fadeIn();
+	
+		var sp = 1
+		
+		$(".infinite_scroll").infinitescroll({
+			navSelector  	: "#more",
+			nextSelector 	: "#more a",
+			itemSelector 	: ".item",
+			
+			loading:{
+				img: "images/masonry_loading_1.gif",
+				msgText: ' ',
+				finishedMsg: '木有了',
+				finished: function(){
+					sp++;
+					if(sp>=10){ //到第10页结束事件
+						$("#more").remove();
+						$("#infscr-loading").hide();
+						$("#page").show();
+						$(window).unbind('.infscr');
+					}
+				}	
+			},errorCallback:function(){ 
+				$("#page").show();
+			}
+			
+		},function(newElements){
+			var $newElems = $(newElements);
+			$('.infinite_scroll').masonry('appended', $newElems, false);
+			$newElems.fadeIn();
+			item_callback();
+			return;
+		});
+	
+	});
+	
+</script>
+</head>
+
+<body>
+   <!--  第一部分  -->
+ <div id="head">
+       <div>
+           <div style="margin-left:20px; line-height:50px; position:absolute;">
+               <a href="http://www.baidu.com" style="color:#EEE; font-size:14px; float:left">登陆</a><img style="float:left" src="img/split.png" />
+               <a href="http://www.baidu.com" style="color:#EEE; font-size:14px; float:left">注册</a><img style="float:left" src="img/split.png" />
+           </div>
+           <div style="right:0px; position:absolute;">
+               <div style="margin-top:25px; float:left">
+                   <a href="#" style="color:#FFF; font-weight:bold; font-size:16px;">leonardo lee</a>
+               </div>
+               <span style="background:#FF4137; color:#FFF; line-height:20px; font-size:12px; float:left; margin-top:10px; margin-right:5px">&nbsp;7&nbsp;</span>
+               <img src="images/pic/02.jpg" height="50"/>
+           </div>
+           <div align="center">
+               <img src="img/headline logo.png" />
+           </div>
+       </div>
+   </div>
+   
+   <!--  第二部分  -->
+   <div id="banner">
+	   <div id="slides">
+           <a href="#" class="prev"><img src="img/prev.png" width="50" alt="Arrow Prev"></a>
+		   <div class="slides_container">
+                <div>
+                    <a href="http://www.17sucai.com"><img src="img/one.jpg" /></a>
+                </div>
+                <div>
+                    <a href="http://www.17sucai.com"><img src="img/two.jpg" /></a>
+                </div>
+                <div>
+                    <a href="http://www.17sucai.com"><img src="img/thr.jpg" /></a>
+                </div>
+                <div>
+                    <a href="http://www.17sucai.com"><img src="img/four.jpg" /></a>
+                </div>
+		   </div>     
+		   <a href="#" class="next"><img src="img/next.png" width="50" alt="Arrow Next"></a>
+	  </div>
+   </div>
+   
+   <!--  水平分割线  -->
+   <div style="width:80%; margin-left:auto; margin-right:auto;"><img style="width:100%" src="img/spit-line.png" /></div>
+   
+   <!--  第三部分  文章列表-->		
+   <div id="essayList">
+        <li class="list"><img width="100%" height="100%" src="img/two_size.png" /></li>
+        <li class="list"><img width="100%" height="100%" src="img/button2.png" /></li>
+        <li class="list"><img width="100%" height="100%" src="img/thr.jpg" /></li>
+   </div>
+   
+   <!--  第四部分 更多分类的显示 -->		
+   <div id="classic">
+       <div id="showbtn"> &gt;</div>
+       <div id="closebtn"> &lt;</div>
+       <div id="classic-cont">dsfsdf</div>
+   </div>	
+   
+   <!--  第五部分  搜索按钮 -->
+   <div id="searchPart" class="search">
+       <img id="searchPng" style="float:right" src="img/search.png"/>
+       <div id="search">
+           <input style="height:22px; line-height:22px" id="searchCont" type="text" />
+           <div id="tips" style="width:100%; height:200px; border:1px solid #000; display:none">
+           </div>
+       </div>
+   </div>		
+   <!--  第六部分  返回按钮 -->
+   <div id="gotopbtn"></div>
+   
+<script type="text/javascript">
+$(function(){
+	<!--返回顶部-->
+	$(window).scroll(function(){
+		$(window).scrollTop()>400 ? $("#gotopbtn").fadeIn(1500).click(function(){
+			$(window).scrollTop(0);
+		}):$("#gotopbtn").fadeOut(1500);	
+	});
+	
+	<!--第三部分  文章-->
+	var listwidth=$('#essayList .list').width();
+	$('#essayList .list').height(listwidth/5);
+	
+	<!--第四部分  更多分类-->
+	$('#showbtn').mouseover(function(){
+		$('#classic').animate({left:"0px"},function (){  
+		      $('#showbtn').hide();
+		      $('#closebtn').show();
+		});
+		$('#classic-cont').show();
+	});
+	$('#closebtn').mouseover(function(){
+		$('#classic').animate({left:"-176px"},function () {    
+			   $('#closebtn').hide();
+		       $('#showbtn').show();
+		});
+	});
+	
+	<!--第五部分  搜索模块-->
+	var timer=null;
+	$('#searchPng').mouseover(function(){
+		showSearch();
+	});
+	$('#searchPng').mouseout(function(){
+	    timer=setTimeout(function(){
+				disSearch();
+		},2000);
+    });
+	$('#searchCont').click(function(){
+		if(timer){
+			clearTimeout(timer);
+		};
+	});
+	$('#searchCont').mouseover(function(){
+		if(timer){
+			clearTimeout(timer);
+		};
+	});
+	$('#searchCont').blur(function(){
+	    timer=setTimeout(function(){
+				disSearch();
+		},2000);
+    });
+	
+});
+
+<!-- 显示搜索 -->
+function showSearch(){
+	$('#search').show(1000);
+}
+function disSearch(){
+	$('#search').hide(1000);
+}
+</script>
+</body>
+</html>

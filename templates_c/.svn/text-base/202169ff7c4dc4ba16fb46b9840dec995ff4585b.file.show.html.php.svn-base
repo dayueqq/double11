@@ -1,0 +1,335 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-09-24 10:28:41
+         compiled from "show.html" */ ?>
+<?php /*%%SmartyHeaderCode:386524169596fd019-26954783%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '202169ff7c4dc4ba16fb46b9840dec995ff4585b' => 
+    array (
+      0 => 'show.html',
+      1 => 1379923712,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '386524169596fd019-26954783',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>印迹 | 该乐</title>
+<link href="css/show.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript">
+  <!-- 实现瀑布加载效果的浏览器宽度检测  -->
+    var isWidescreen=screen.width>=1250; 
+    if(isWidescreen){document.write("<style type='text/css'>.demo{width:980px;}</style>");}
+</script>
+
+</head>
+
+<body>
+   <!--  第一部分  -->
+   <div id="head">
+       <div>
+           <div style="margin-left:20px; line-height:50px; position:absolute;">
+               <a href="http://www.yinjitee.com/login.php" style="color:#EEE; font-size:14px; float:left">登陆</a><img style="float:left" src="img/split.png" />
+               <a href="http://www.yinjitee.com/login.php" style="color:#EEE; font-size:14px; float:left">注册</a><img style="float:left" src="img/split.png" />
+           </div>
+           <div style="right:0px; position:absolute;">
+               <div style="margin-top:25px; float:left">
+                   <a href="#" style="color:#FFF; font-weight:bold; font-size:16px;"><?php echo $_smarty_tpl->getVariable('name')->value;?>
+</a>
+               </div>
+               <span style="background:#FF4137; color:#FFF; line-height:20px; font-size:12px; float:left; margin-top:10px; margin-right:5px">&nbsp;7&nbsp;</span>
+               <a href="personal.php?personid=<?php echo $_smarty_tpl->getVariable('personid')->value;?>
+"><img src="<?php echo $_smarty_tpl->getVariable('headpic')->value;?>
+" height="50" width="50"/></a>
+           </div>
+           <div align="center">
+               <a href="http://www.yinjitee.com/"><img src="img/headline logo.png" /></a>
+           </div>
+       </div>
+   </div>
+   
+   <!--  第二部分  广告部分-->
+   <div id="ads">
+	   
+   </div>
+      
+   <!--  第二部分 水平分割线  -->
+   <div id="banner">
+       <div style="float:left">
+           <li class="order">专题</li>
+           <li class="order"><a href="show.php?order=month">热门</a></li>
+           <li class="order"><a href="show.php?order=all">全部</a></li>
+       </div>
+       <img style="width:100%" src="img/spit-line.png" />
+   </div>   
+   
+   <!--  第三部分  瀑布加载 -->
+   <div class="demo">	
+	   <div class="infinite_scroll">
+         <?php unset($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['name'] = 'show_id';
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'] = is_array($_loop=$_smarty_tpl->getVariable('show')->value) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show'] = true;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['max'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'] = 1;
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['start'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'] > 0 ? 0 : $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop']-1;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show']) {
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['loop'];
+    if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] == 0)
+        $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show'] = false;
+} else
+    $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'] = 0;
+if ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['show']):
+
+            for ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['start'], $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] = 1;
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] <= $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total'];
+                 $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] += $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'], $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration']++):
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['rownum'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index_prev'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] - $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index_next'] = $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['index'] + $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['step'];
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['first']      = ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] == 1);
+$_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['last']       = ($_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['iteration'] == $_smarty_tpl->tpl_vars['smarty']->value['section']['show_id']['total']);
+?>
+            <div class="masonry_brick">
+                <div class="group1">
+                    <div class="box01">
+                        <div class="imgbox">
+                            <img alt="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['sourceid'];?>
+" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['path'];?>
+"/>
+                        </div>
+                        <a target="_blank" href="./picture.php?id=<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['sourceid'];?>
+">
+                            <div class="box03">
+                                <div class="title"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['title'];?>
+</div>
+                                <div class="cont"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['detail'];?>
+</div>
+                                <div class="date"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['time'];?>
+</div>  
+                            </div>
+                        </a>
+                    </div>
+                    <div class="others">
+                        <li class="fav"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['love'];?>
+</a></li>
+                        <li class="cmnt"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['says'];?>
+</a></li>
+                        <li class="view"><a href=""><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['views'];?>
+</a></li>
+                    </div>
+                </div>
+                <div class="group2">
+                    <a target="_new" href="./personal.php?personid=<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['authorid'];?>
+">
+                        <div class="headpic"><img height="100%" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['authorpic'];?>
+" /></div>
+                        <div class="author"><?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['author'];?>
+</div>
+                    </a>
+                </div>
+                <img class="clothpath" src="<?php echo $_smarty_tpl->getVariable('show')->value[$_smarty_tpl->getVariable('smarty')->value['section']['show_id']['index']]['clothpath'];?>
+" />
+                
+            </div><!--item end-->
+         <?php endfor; endif; ?>
+	   </div>			
+         <!--更多加载页面-->
+       <div id="more"><a href="show.php?page=2"></a></div>
+		 <!--分页类-->			
+       <div id="page" class="page" style="display:none;">
+           <div class="page_num">
+              <span class="unprev"></span>
+              <span class="current">1</span>
+              <a href="">&nbsp;2&nbsp;</a>
+              <a href="">&nbsp;3&nbsp;</a>
+              <a href="">&nbsp;4&nbsp;</a>
+              <a href="" class="next"></a>
+           </div>
+       </div>
+   </div>
+   
+
+   <!--  第四部分 更多分类的显示 -->		
+   <div id="popular" class="classic">
+       <div class="box01" align="center"><a href="show.php?order=month">月热门</a></div>
+       <div class="box01" align="center"><a href="show.php?order=week">周热门</a></div>
+   </div>	
+   <!--  第五部分  搜索按钮 -->
+   <div id="searchPart" class="search">
+       <img id="searchPng" style="float:right" src="img/search.png"/>
+       <div id="search">
+           <input style="height:22px; line-height:22px" id="searchCont" type="text" />
+           <div id="tips" style="width:100%; height:200px; border:1px solid #000; display:none">
+           </div>
+       </div>
+   </div>		
+   <!--  第六部分  返回按钮 -->		
+   <div id="gotopbtn"></div>
+   	
+<script type="text/javascript">
+$(function(){
+	var boxheight;  // 获得图片盒子的高度
+	var boxwidth;  // 获得图片盒子的宽度
+	<!--返回顶部-->
+	$(window).scroll(function(){
+		$(window).scrollTop()>400 ? $("#gotopbtn").fadeIn(1500).click(function(){
+			$(window).scrollTop(0);
+		}):$("#gotopbtn").fadeOut(1500);	
+	});
+
+	//在对这些缩略图的鼠标滑过事件
+	$('.masonry_brick').live({  //使用live  可以对以后添加的div添加事件
+		mouseenter:
+		function(){
+		   //显示标题
+		   $(this).find('.box03').fadeIn(200);
+		},
+		mouseleave:
+		function(){
+		   //隐藏标题
+		   $(this).find('.box03').fadeOut(200);
+		}
+	});
+	
+	//实现瀑布流的加载
+	function item_callback(){ 
+		$('.masonry_brick .group1').mouseover(function(){
+			$(this).css('box-shadow', '0 2px 5px rgba(35,25,25,0.5)');
+		}).mouseout(function(){
+			$(this).css('box-shadow', '0 2px 3px rgba(34,25,25,0.2)');	 	
+		});
+		
+		item_masonry();	
+
+	}
+
+	item_callback();  
+
+	$('.masonry_brick').fadeIn();
+
+	var sp = 1
+	
+	$(".infinite_scroll").infinitescroll({
+		navSelector  	: "#more",
+		nextSelector 	: "#more a",
+		itemSelector 	: ".masonry_brick",
+		
+		loading:{
+			img: "images/masonry_loading_1.gif",
+			msgText: ' ',
+			finishedMsg: '木有了',
+			finished: function(){
+				sp++;
+				if(sp>=10){ //到第10页结束事件
+					$("#more").remove();
+					$("#infscr-loading").hide();
+					$("#page").show();
+					$(window).unbind('.infscr');
+				}
+			}	
+		},errorCallback:function(){ 
+			$("#page").show();
+		}
+		
+	},function(newElements){
+		var $newElems = $(newElements);
+		$('.infinite_scroll').masonry('appended', $newElems, false);
+		$newElems.fadeIn();
+		item_callback();
+		return;
+	});
+
+	<!--第四部分  更多分类-->
+	$('#showbtn').mouseover(function(){
+		$('#classic').animate({left:"0px"},function (){  
+		      $('#showbtn').hide();
+		      $('#closebtn').show();
+		});
+		$('#classic-cont').show();
+	});
+	$('#closebtn').mouseover(function(){
+		$('#classic').animate({left:"-176px"},function () {    
+			   $('#closebtn').hide();
+		       $('#showbtn').show();
+		});
+	});
+	
+	<!--第五部分  搜索模块-->
+	var timer=null;
+	$('#searchPng').mouseover(function(){
+		showSearch();
+	});
+	$('#searchPng').mouseout(function(){
+	    timer=setTimeout(function(){
+				disSearch();
+		},2000);
+    });
+	$('#searchCont').click(function(){
+		if(timer){
+			clearTimeout(timer);
+		};
+	});
+	$('#searchCont').mouseover(function(){
+		if(timer){
+			clearTimeout(timer);
+		};
+	});
+	$('#searchCont').blur(function(){
+	    timer=setTimeout(function(){
+				disSearch();
+		},2000);
+    });
+
+});
+
+	<!-- 实现瀑布加载效果  -->
+    function item_masonry(){ 
+	    boxwidth=$('.masonry_brick').width();  // 获得图片盒子的宽度
+		boxheight=(boxwidth*0.99);
+		$('.masonry_brick').height(boxheight);
+        boxgap=$('.demo').width()*0.03;
+		$('.masonry_brick .group1 .box01 .box03').height($('.masonry_brick .group1 .box01').height()+10);
+		//imgwidth=$('.group1 .box01. imgbox').width();  //设置图片的宽度
+		//imgtop='-70px';  //设置图片的上边高度
+		
+		$('.imgbox img').load(function(){
+			$('.infinite_scroll').masonry({ 
+				itemSelector: '.masonry_brick',
+				//columnWidth:160,
+				gutterWidth:boxgap							
+			});
+			<!-- 改变图片 大小 -->
+			//$(this).css('width',imgwidth);
+			//$(this).css('marginTop',imgtop);
+		});
+			
+		$('.infinite_scroll').masonry({ 
+			itemSelector: '.masonry_brick',
+			//columnWidth:160,
+			gutterWidth:boxgap								
+		});	
+	}
+
+	<!-- 显示搜索 -->
+function showSearch(){
+	$('#search').show(1000);
+}
+function disSearch(){
+	$('#search').hide(1000);
+}
+</script>
+</body>
+</html>

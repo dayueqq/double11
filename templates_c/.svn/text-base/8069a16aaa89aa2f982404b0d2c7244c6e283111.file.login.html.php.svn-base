@@ -1,0 +1,84 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-08-07 15:26:46
+         compiled from "login.html" */ ?>
+<?php /*%%SmartyHeaderCode:41615201f6b62ddfd0-03407728%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '8069a16aaa89aa2f982404b0d2c7244c6e283111' => 
+    array (
+      0 => 'login.html',
+      1 => 1375860309,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '41615201f6b62ddfd0-03407728',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>印迹 | 欢迎你的加入</title>
+<style type="text/css">
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+#logo{ margin-left:auto; margin-right:auto; width:33.4%; margin-top:0px;  }
+#logo1{ margin-left:auto; margin-right:auto; width:33.4%; margin-top:20px;  }
+#af{background:url(../img/login1.png) no-repeat; background-position:0px 0px; 
+	height:2px;
+	margin-bottom:0px;
+	margin-top:0px;
+	 }
+#bannar1 {
+	background-color: #f1f1f1;
+	width:100%; height:272.6px; margin-top:0px; margin-left:auto; margin-right:auto;
+}
+#bannar{background-color: #1abc9c;
+	width:100%; margin-top:0px; margin-left:auto; margin-right:auto;}
+
+</style></head>
+
+<body>
+<div id="bannar">
+<div id="logo"><img src="img/login1.png"  width="100%" style="margin-top:185px;"/>
+<div id="logo1"><a href="<?php echo $_smarty_tpl->getVariable('code_url')->value;?>
+"><img src="img/weibo_login.png" width="100%"  /></a></div>
+</div>
+</div> 
+
+
+</body>
+
+<script language="JavaScript" type="text/javascript">
+  var winHeight;
+
+ function owinHeight(){//当前窗口的height
+  
+  if (window.innerHeight){
+      winHeight = window.innerHeight
+  }else if ((document.body) && (document.body.clientHeight)){
+      winHeight = document.body.clientHeight
+  }
+  if (document.documentElement  && document.documentElement.clientHeight){
+      winHeight = document.documentElement.clientHeight;
+  }
+   
+  document.getElementById("bannar").style.height=(winHeight)+"px";
+  
+  return winHeight; 
+}
+
+	owinHeight();                  //调用函数，获取数值
+    window.onresize=owinHeight;
+	
+	
+</script>
+</html>

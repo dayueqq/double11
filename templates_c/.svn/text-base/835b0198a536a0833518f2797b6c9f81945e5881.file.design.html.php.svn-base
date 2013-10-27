@@ -1,0 +1,1149 @@
+<?php /* Smarty version Smarty-3.0.6, created on 2013-09-30 15:13:45
+         compiled from "design.html" */ ?>
+<?php /*%%SmartyHeaderCode:17722524995293ab2e8-09971417%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '835b0198a536a0833518f2797b6c9f81945e5881' => 
+    array (
+      0 => 'design.html',
+      1 => 1380554017,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '17722524995293ab2e8-09971417',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="Bookmark" href="favicon.ico">
+<title>印迹 | 设计</title>
+<link href="css/design.css" rel="stylesheet" type="text/css" />
+<script src="http://open.web.meitu.com/sources/xiuxiu.js" type="text/javascript"></script>
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="./js/jquery.form.js"></script>
+<script language="javascript" src="./js/dom-drag.js"></script>
+<script language="javascript" src="js/jqcookie.js"></script>
+<script src="js/jscolor.js"></script>
+<script type="text/javascript" src="<?php echo $_smarty_tpl->getVariable('jsonfile')->value;?>
+"></script>
+<script type="text/javascript">
+   var dragse=new Array();   //这个是二维数组
+   var movestartx=new Array(), movestarty=new Array(), moveendx=new Array(), moveendy=new Array();
+   var opstartx=new Array(),   opstarty=new Array();
+   var imgstartx=new Array(),  imgstarty=new Array(),  imgtempw=new Array(), imgtemph=new Array();
+   var oP=new Array();   var oW=new Array();
+   var flag=new Array();   var wflag=new Array();
+   var curnum=0;  //用于存放当前操作的是第几个盒子
+   var curword=0;  //用于存放当前操作的是第几个文字
+   var zindex=100;  //用于存放新建的盒子其高度应为多少
+   var backflag=0;  //如果为0，表示当前为正面
+   var bgurl=new　Array('./clothimg/front1white.png','./images/back1.jpg');  //记录设计模版的背景图片
+   var prevbackurl='1';  //记录模版反面的图片
+   var isLogin=1;  //判断是否有登陆账号
+   var moduletype=1;  // 底板类型
+   
+   var getElementsByName = function(tag, name){   //定义此函数是因为 IE  不支持  document.getElementsByName
+       var returns = document.getElementsByName(name);
+       if(returns.length > 0) return returns;
+       returns = new Array();
+       var e = document.getElementsByTagName(tag);
+       for(var i = 0; i < e.length; i++){
+           if(e[i].getAttribute("name") == name){
+               returns[returns.length] = e[i];
+           }
+      }
+      return returns;
+   }
+   window.onload=function(){
+	   oP = getElementsByName('img','p');
+	   oW = getElementsByName('div','word');
+	   for(var j=0;j<oP.length;j++){
+		   oP[j].index=j;
+	       oP[j].onclick=function(){			
+				curnum=this.index;
+				curword=null;   
+				disshow(this.index); //显示当前正在工作的盒子
+		   }
+	   }
+	   
+	   //改变导航栏的选择状态
+	   $('.main .tab .box01').each(function(i){
+		   if(i!=3){   //避免点击“添加文字”时，其它消失
+			   $(this).click(function(){
+				   $('.main .tab .box01').each(function(){
+					   $(this).css('borderColor','#EEE');
+				   });   
+				   $('.leftbox').each(function(){
+					   $(this).hide('slow');
+				   });   
+				   $(this).css('borderColor','#F39C12');
+				   $('.leftbox:eq('+i+')').show('slow');
+			   });   
+		   }
+	   });
+	   
+	   //改变衣服底板的颜色
+	   $('.bookCloth div').each(function(i){
+		   $(this).click(function(){
+			   $('.bookCloth div').each(function(){
+				   $(this).attr('class','model');
+	           });   
+			   $(this).attr('class','modelcur');
+			   switchmod(moduletype,$(this).attr('name'));  //切换底板颜色
+		   });    
+	   });
+	   //改变衣服尺码大小
+	   $('.bookCloth .size input').each(function(i){
+		   $(this).click(function(){
+			   $('.bookCloth .size input').each(function(){
+				   $(this).attr('class','');
+	           });   
+			   $(this).attr('class','cur');
+		   });    
+	   });
+       
+	   //保存时改变选择状态
+	   $('#savebox .input .sharetype').each(function(i){
+		   $(this).click(function(){
+			   if($(this).attr('alt')=='1'){
+				   $(this).attr('alt','0');
+				   $(this).attr('src','img/off.png');
+			   }else{
+				   $(this).attr('alt','1');
+				   $(this).attr('src','img/on.png');
+			   }
+		   });    
+	   });
+	   
+	   //进行初始化
+	   init();
+	   
+	   //显示文字编辑工具
+	   for(var n=0;n<oW.length;n++){
+		   oW[n].index=n;
+		   oW[n].onclick=function(){
+			   $('#imgbox .word').css('border','1px dotted #999');
+			   $('#designword').css({'display':'block'});
+			   curword=this.index;
+			   curnum=null;
+		   }
+	   }
+	   //回车键删除或者信息提交
+	   document.onkeydown = function(e){
+          e=window.event || e;
+		  if(e.keyCode==46){
+			  deletebox();
+		  }else if(e.keyCode==13){
+			  subinfo();
+		  }
+	   }
+       //判断是否来自有 id 编号的链接
+	   if('<?php echo $_smarty_tpl->getVariable('imgid')->value;?>
+'){
+		   Adddesignbox('<?php echo $_smarty_tpl->getVariable('imgid')->value;?>
+');
+	   }
+	   //////上传信息改变后进行上传功能
+	   $('#myfile').change(function(){
+		   $('#uploadMaterial').submit();
+	   });
+       /////自定义素材上传
+	   var bar = $('.bar');
+       var percent = $('.percent');
+       var status = $('#status');
+   
+	  $('form').ajaxForm({
+		  beforeSend: function() {
+			  status.empty();
+			  var percentVal = '0%';
+			  bar.width(percentVal)
+			  percent.html(percentVal);
+		  },
+		  uploadProgress: function(event, position, total, percentComplete) {
+			  var percentVal = percentComplete + '%';
+			  bar.width(percentVal)
+			  percent.html(percentVal);
+		  },
+		  success: function() {
+			  var percentVal = '100%';
+			  bar.width(percentVal)
+			  percent.html(percentVal);
+		  },
+		  complete: function(xhr) {
+			  var str=$('#upElement .box02:eq(0)').html()+xhr.responseText;
+			  $('#upElement .box02:eq(0)').html(str);
+		  }
+	  }); 
+/////////
+   }
+   //网站初始化
+   function init(){
+	   pageElement(1,'');    //进行分页
+	   classic();
+   }
+   
+   //对素材区图片进行分类
+   function classic(){
+	   var str="<option>全部</option>";;
+	   for(var i=0;i<classicjson.length;i++){
+		   str+="<option>"+classicjson[i].classic+"</option>";
+	   }
+	   $('#classic').html(str);
+   }
+		   
+   //对素材区图片进行分页+ 添加动态命令
+   function pageElement(page,obj){
+	   if(obj){
+		   obj=$('#classic').val();
+		   if(obj=='全部'){
+			   arrayjson=datajson;
+		   }else{
+			   arrayjson=new Array();
+			   var k=0;
+			   for(var i=0;i<datajson.length;i++){
+				   if(datajson[i].classic==obj){
+					   arrayjson[k]=datajson[i];
+					   k++;
+				   }
+			   }
+		   }
+	   }else{
+		   arrayjson=datajson;
+	   }
+	   var maxPage=Math.ceil(arrayjson.length/16);
+	   var str='';
+	   for(var i=(page-1)*16;i<(page*16)&&i<arrayjson.length;i++){
+		   str+="<div class='blackboard'><img width='100%' src='"+arrayjson[i].path+"' title='"+arrayjson[i].title+"' name='"+arrayjson[i].author+"' alt='"+arrayjson[i].detail+"'/></div>";
+	   }
+	   $('#element .box02:eq(0)').html(str);
+	   
+	   var pstr='';
+	   if(page==1){
+		   pstr="<div class='box03' onclick=\"pageElement(0,'')\">上一页</div><div class='box03' align='center'>1/"+maxPage+"</div><div class='box03' align='right' onclick=\"pageElement(2,'')\">下一页</div>";
+	   }else{
+		   pstr="<div class='box03' onclick=\"pageElement("+(page-1)+",'"+obj+"')\">上一页</div><div class='box03' align='center'>"+page+'/'+maxPage+"</div>";
+		   if(page>=maxPage){
+			   pstr+="<div class='box03' align='right' onclick=\"pageElement("+page+",'"+obj+"')\">下一页</div>";
+		   }else{
+			   pstr+="<div class='box03' align='right' onclick=\"pageElement("+(page+1)+",'"+obj+"')\">下一页</div>";
+		   }
+	   }
+	   $('#element .box02:eq(1)').html(pstr);  //不能够使用 attr 来修改 onclick 事件，否则在 ie7 之下的版本都不兼容
+	   resize();
+   }
+   //左侧素材堆放盒子添加 点击、鼠标放上等命令
+   function resize(){
+	   $('.blackboard img').each(
+	       function(i){  
+			   $(this).hover(function(){
+				   var obj=$(this);  
+				   //var offset=parseInt($(this).offset().top)-90;
+				   timer=setTimeout(function(){
+					   var odetail=$('#detail > div > span');
+					   odetail[0].innerHTML=obj.attr('title');
+					   odetail[1].innerHTML=obj.attr('name');
+					   odetail[2].innerHTML=obj.attr('alt');
+					   //为了兼容ie7 下的浏览器
+					   $('#detail > div > img').attr("src",obj.attr('src').replace('material/','material/material/'));
+					   //$('#detail').css({'top':offset});  //实现提示自动偏移
+					   $('#detail').show('normal');
+					  },500);
+			   },
+			   function(){
+				   if(timer){
+					   clearTimeout(timer);
+				   };
+			   });
+			   //创建设计层
+			   $(this).click(function(){
+				   Adddesignbox($(this).attr('src').replace('material/','material/material/'));
+			   });
+			   //鼠标移出取消详情显示
+			   $(this).mouseout(function(){
+				   $('#detail').hide('normal') ;
+			   });  
+		   }
+	   );
+   }
+   
+   function Adddesignbox(path){
+	   for(var k=0;k<3;k++){
+		   if(backflag){  //如果为背面+3
+			   var curk=k+3;
+		   }else{
+			   var curk=k;
+		   }
+		   if(!flag[curk]){
+			   oP[curk].src=path;
+			   Drag.init(oP[curk]);
+			   oP[curk].onDragStart = function(x, y){ reportDragStart("op", x, y, curk);}
+	           oP[curk].onDragEnd = function(x, y) { reportDragEnd("op", x, y, curk); }   
+	   
+			   document.getElementById('design'+curk).style.display='block';
+			   document.getElementById('design'+curk).style.zIndex=zindex;  //让后建的东西放在上层
+			   zindex++;
+			   dragse[curk]= new Array();
+			   temp= getElementsByName('div',"dragse"+curk); 
+
+			   for(var m=0;m<temp.length;m++){
+				   dragse[curk][m]=temp[m];
+				   Drag.init(dragse[curk][m]);
+				   dragse[curk][m].onDragStart = function(x, y) { reportDragStart("se", x, y, curk); }
+				   switch(m){
+					   case 0:dragse[curk][m].onDrag = function(x, y) { reportDrag( 0, x, y, curk); } ;break;
+					   case 1:dragse[curk][m].onDrag = function(x, y) { reportDrag( 1, x, y, curk); } ;break;
+					   case 2:dragse[curk][m].onDrag = function(x, y) { reportDrag( 2, x, y, curk); } ;break;
+					   case 3:dragse[curk][m].onDrag = function(x, y) { reportDrag( 3, x, y, curk); } ;break;
+				   }
+			   }
+			   flag[curk]=1;
+			   break;
+		   }
+	   }
+	   if(k>=3){
+		   alert('最多只能够添加3个图片');
+	   }
+	   $('#designpic').show('slow');
+   }
+   
+   function reportDragStart(who, x, y, index) {
+	   switch(who){
+		   case 'op':opstartx[index]=x;  opstarty[index]=y; 
+		             for(var i=0;i<4;i++){
+						 dragse[index][i].style.display='none'; 
+					 }break;
+		   case 'se':
+		             imgstartx[index]=parseInt(oP[index].offsetLeft); imgstarty[index]=parseInt(oP[index].offsetTop);             
+	                 imgtempw[index]=oP[index].width; imgtemph[index]=oP[index].height;
+					
+					 movestartx[index]=x;  movestarty[index]=y; 
+					 break;
+	   }
+   }
+
+   function reportDragEnd(who, x, y, index) {  
+	   imgstarty[index]=oP[index].offsetTop;  imgstartx[index]=oP[index].offsetLeft;  //图片位置定位
+       width=oP[index].width;  height=oP[index].height;  //图片长宽
+	   
+	   dragse[index][0].style.left=(imgstartx[index]-5)+'px'; dragse[index][0].style.top=(imgstarty[index]-5)+'px';
+	   dragse[index][1].style.left=dragse[index][0].style.left; dragse[index][1].style.top=(parseInt(dragse[index][0].style.top)+height)+'px';
+	   dragse[index][2].style.left=(parseInt(dragse[index][0].style.left)+width)+'px'; dragse[index][2].style.top=dragse[index][0].style.top;
+	   dragse[index][3].style.left=dragse[index][2].style.left; dragse[index][3].style.top=dragse[index][1].style.top;
+	   
+	   for(var i=0;i<4;i++){
+			dragse[index][i].style.display='block'; 
+	   }
+   }
+   
+   function reportDrag(who, x, y, index) {
+	   var width, height;
+	   switch(who){ //计算重定位位置 以及 图片的新长宽
+		   case 0:imgstartx[index]=(x+5); imgstarty[index]=(y+5); width=(movestartx[index]-x);  height=(movestarty[index]-y); break;
+		   case 1:imgstartx[index]=(x+5); width=(movestartx[index]-x);  height=(y-movestarty[index]); break;
+		   case 2:imgstarty[index]=(y+5); width=(x-movestartx[index]);  height=(movestarty[index]-y); break;
+		   case 3:width=(x-movestartx[index]); height=(y-movestarty[index]); break;		   
+	   }
+
+	   oP[index].style.top=imgstarty[index]+'px';  oP[index].style.left=imgstartx[index]+'px';  //图片位置重定位
+       oP[index].width=(width+imgtempw[index]);  oP[index].height=(height+imgtemph[index]);  //图片新长宽
+
+	   dragse[index][0].style.left=(imgstartx[index]-5)+'px'; dragse[index][0].style.top=(imgstarty[index]-5)+'px';
+	   dragse[index][1].style.left=dragse[index][0].style.left; dragse[index][1].style.top=(parseInt(dragse[index][0].style.top)+oP[index].height)+'px';
+	   dragse[index][2].style.left=(parseInt(dragse[index][0].style.left)+oP[index].width)+'px'; dragse[index][2].style.top=dragse[index][0].style.top;
+	   dragse[index][3].style.left=dragse[index][2].style.left; dragse[index][3].style.top=dragse[index][1].style.top;   
+   }
+   
+   //删除
+   function deletebox() {
+	    var obj=curnum;
+		if (curword==null){
+			var my=document.getElementById('design'+obj);
+            my.style.display='none';
+			flag[obj]=0;
+        }else{
+			obj=curword;
+			var my=document.getElementById('word'+obj);
+			my.style.display='none';
+			wflag[obj]=0;
+		}
+   }
+   
+   //鼠标选中某一盒子时，边框高亮显示
+   function disshow(obj){
+	   $('.imgp').css('border','1px dotted #999');
+	   for(var n=0;n<dragse.length;n++){
+		   if(n==obj){
+			   for(var mm=0;mm<4;mm++){
+				   dragse[n][mm].style.display='block';
+			   }
+		   }else{
+			   for(var mm=0;mm<4;mm++){
+				   dragse[n][mm].style.display='none';
+			   }
+		   }
+	   }
+   }
+   //价格计费
+   function price(){
+	   var price=20;
+	   for(var k=0;k<3;k++){
+		   if(flag[k]){
+			   price+=5;
+		   }
+	   }
+	   alert("总费用为："+price+" 元");
+   }
+   
+   //衣服生成及衣服分享
+   function save(num){
+	   var front=new Array(); var bclothes=new Array();
+	   ///正面数组
+	   var k=0;
+	   for(var m=0;m<3;m++){
+		   if(flag[m]){
+		       front[k]=new Array();
+			   front[k][0]=$('#design'+m).css('zIndex');
+			   front[k][1]=oP[m].src;
+			   front[k][2]=oP[m].width;
+			   front[k][3]=oP[m].height;
+			   front[k][4]=parseInt($('#p'+m).css('top'))+51;
+			   front[k][5]=parseInt($('#p'+m).css('left'))+21;
+			   front[k][6]='img';
+			   k++;
+		   }
+		   if(wflag[m]){
+			   front[k]=new Array();
+			   front[k][0]=$('#word'+m).css('zIndex');
+			   front[k][1]=$('#word'+m).html();
+			   front[k][2]=$('#word'+m).css('fontSize');
+			   front[k][3]=$('#word'+m).css('color');
+			   front[k][4]=$('#word'+m).css('fontWeight');
+			   front[k][5]=$('#word'+m).css('fontFamily');
+			   front[k][6]=$('#word'+m).offset().top -$('#imgbox').offset().top+21;
+			   front[k][7]=parseInt($('#word'+m).css('left'))+1;
+			   front[k][8]='word';
+			   k++;
+		   }
+	   }
+	   front.sort();
+	   var fro=new Array();  
+	   for(var m=0;m<front.length;m++){
+		   fro[m]=front[m].join(',');
+	   }
+
+	   ///背面数组
+	   k=0;
+	   for(var m=3;m<6;m++){
+		   if(flag[m]){
+		       bclothes[k]=new Array();
+			   bclothes[k][0]=$('#design'+m).css('zIndex');
+			   bclothes[k][1]=oP[m].src;
+			   bclothes[k][2]=oP[m].width;
+			   bclothes[k][3]=oP[m].height;
+			   bclothes[k][4]=parseInt($('#p'+m).css('top'))+51;
+			   bclothes[k][5]=parseInt($('#p'+m).css('left'))+21;
+			   bclothes[k][6]='img';
+			   k++;
+		   }
+		   if(wflag[m]){
+			   bclothes[k]=new Array();
+			   bclothes[k][0]=$('#word'+m).css('zIndex');
+			   bclothes[k][1]=$('#word'+m).html();
+			   bclothes[k][2]=$('#word'+m).css('fontSize');
+			   bclothes[k][3]=$('#word'+m).css('color');
+			   bclothes[k][4]=$('#word'+m).css('fontWeight');
+			   bclothes[k][5]=$('#word'+m).css('fontFamily');
+			   bclothes[k][6]=$('#word'+m).offset().top -$('#imgbox').offset().top+21;
+			   bclothes[k][7]=parseInt($('#word'+m).css('left'))+1;
+			   bclothes[k][8]='word';
+			   k++;
+		   }
+	   }
+	   var backclo=new Array();  
+	   for(var m=0;m<bclothes.length;m++){
+		   backclo[m]=bclothes[m].join(',');
+	   }
+	   ///////
+	   
+       $('.main').css({"opacity":"0.2"});
+	   
+	   $.post("imgmerge.php",{'bgurl':bgurl[0].split('.png')[0],'front[]':fro,'bclothes[]':backclo},function(data){
+		   data=data.replace(/^\s+|\s+$/g,'');
+           if(num=='share'){
+			   var str="<a onclick=\"chooseUp('share','"+data+"')\">分享&nbsp;&nbsp;SHARE</a>"
+			   $('#savebox .button').html(str);
+			   $('#savebox').show();
+		   }else if(num=='shop'){
+			   buycar("./person/temp/whole/"+data+".jpg");
+			   $('#buybox').show();
+		   }else if(num=='save'){   //如果为保存，则打开 download 文件
+			   window.open("./download.php?file=person/temp/whole/"+data+'.jpg');
+			   $('.main').css({"opacity":"1"});
+		   }
+       });
+   }
+   //衣服预览
+   function preview(){
+	   //正面
+	   var odiv=document.getElementById('prev');
+	   odiv.innerHTML='';
+	   for(var k=0;k<3;k++){
+		   if(flag[k]){
+			   var str="<img src='"+oP[k].src+"' width="+oP[k].width+" height="+oP[k].height+" style='position:absolute; top:"+((parseInt(oP[k].style.top)+50)+'px')+"; left:"+((parseInt(oP[k].style.left)+22)+'px')+"; z-index:"+document.getElementById('design'+k).style.zIndex+"' />";
+			   odiv.innerHTML+=str;
+			   $.cookie('flag'+k,str,1000);
+		   }
+	   }
+	   for(var k=0;k<3;k++){
+		   if(wflag[k]){
+			   var str="<div style='position:absolute; width:220px; top:"+oW[k].style.top+"; left:"+oW[k].style.left+"; z-index:"+oW[k].style.zIndex+"; color:"+oW[k].style.color+"; font-size:"+oW[k].style.fontSize+";font-weight:"+oW[k].style.fontWeight+"; font-family:"+oW[k].style.fontFamily+"'>"+oW[k].innerHTML+"</div>";
+			   odiv.innerHTML+=str;
+			   $.cookie('wflag'+k,str,1000);
+		   }
+	   }
+	   //////
+	   $('.main').css({"opacity":"0.2"});
+	   $('#prevbox').find('img:eq(0)').attr('src',bgurl[0]);
+	   $('#prevbox').fadeIn(1500);
+   }
+   //衣服退出展示
+   function fadeout(){
+	   $('#prevbox').fadeOut(1500);
+	   $('.main').css({"opacity":"1"});
+   }
+   //添加文字
+   function addword(){
+	   for(var i=0;i<3;i++){
+		   if(backflag){
+			   var curi=i+3;
+		   }else{
+			   var curi=i;
+		   }
+		   if(!wflag[curi]){
+			   oW[curi].style.display='block';//让后建的东西放在上层
+			   oW[curi].style.zIndex=zindex; 
+			   oW[curi].style.fontFamily='sans-serif';
+			   oW[curi].innerHTML='请输入文字';
+			   zindex++;
+			   wflag[curi]=1;
+			   Drag.init(oW[curi]);
+			   break;
+		   }
+	   }
+   }
+   //修改文字
+   function upword(val,obj){
+	   var oword=$('#word'+curword);
+	   switch(obj){
+		   case 'family':oword.css({"font-family":val}); break;
+		   case 'size':oword.css({"font-size":val}); break;
+		   case 'cont':if(!val){oword.css({'display':'none'}); wflag[curword]=0; closeword();}oword.html(val);break;
+		   case 'weight':oword.css({"font-weight":val.style.fontWeight});
+		                 if(val.style.fontWeight=='bold'){
+							 val.style.fontWeight='normal';
+						 }else{
+							 val.style.fontWeight='bold';
+						 }
+		                 break;
+		   case 'color':oword.css({'color':'#'+val});break;
+	   }
+   }
+   //关闭文字修改模块
+   function closeword(){
+	   $('#designword').css({'display':'none'});
+   }
+   //排序
+   function move(obj){
+	   var a=new Array();
+	   var j=0;
+	   for(var i=0;i<3;i++){
+		   if(backflag){
+			   var curi=i+3;
+		   }else{
+			   var curi=i;
+		   }
+		   if(flag[curi]){
+			   a[j]=new Array();
+			   a[j][0]=document.getElementById('design'+curi).style.zIndex;
+			   a[j][1]=curi;
+			   a[j][2]='oP';
+			   j++;
+		   }
+	   }
+	   for(var i=0;i<3;i++){
+		   if(backflag){
+			   var curi=i+3;
+		   }else{
+			   var curi=i;
+		   }
+		   if(wflag[curi]){
+			   a[j]=new Array();
+			   a[j][0]=oW[curi].style.zIndex;
+			   a[j][1]=curi;
+			   a[j][2]='oW';
+			   j++;
+		   }
+	   }
+	   a.sort();
+	   if(curnum==null){ //当前是文字处于编辑状态
+		   for(var k=0;k<a.length;k++){
+			   if(a[k][1]==curword&&a[k][2]=='oW'){
+				   if(obj==2){
+					   var tempindex=a[k-1][0];
+					   var temp=a[k-1][2];
+					   if(temp=='oP'){
+						   document.getElementById('design'+a[k-1][1]).style.zIndex=oW[curword].style.zIndex;
+					   }else{
+						   oW[a[k-1][1]].style.zIndex=oW[curword].style.zIndex;
+					   }
+					   oW[curword].style.zIndex=tempindex;
+				   }else{
+					   var tempindex=a[k+1][0];
+					   var temp=a[k+1][2];
+					   if(temp=='oP'){
+						   document.getElementById('design'+a[k+1][1]).style.zIndex=oW[curword].style.zIndex;
+					   }else{
+						   oW[a[k+1][1]].style.zIndex=oW[curword].style.zIndex;
+					   }
+					   oW[curword].style.zIndex=tempindex;
+				   }
+				   break;
+			   }
+		   }
+	   }else{ //当前是图片处于编辑状态
+		   for(var k=0;k<a.length;k++){
+			   if(a[k][1]==curnum&&a[k][2]=='oP'){
+				   if(obj==2){
+					   var tempindex=a[k-1][0];
+					   var temp=a[k-1][2];
+					   if(temp=='oP'){
+						   document.getElementById('design'+a[k-1][1]).style.zIndex=document.getElementById('design'+curnum).style.zIndex;
+					   }else{
+						   oW[a[k-1][1]].style.zIndex=document.getElementById('design'+curnum).style.zIndex;
+					   }
+					   document.getElementById('design'+curnum).style.zIndex=tempindex;
+				   }else{
+					   var tempindex=a[k+1][0];
+					   var temp=a[k+1][2];
+					   if(temp=='oP'){
+						   document.getElementById('design'+a[k+1][1]).style.zIndex=document.getElementById('design'+curnum).style.zIndex;
+					   }else{
+						   oW[a[k+1][1]].style.zIndex=document.getElementById('design'+curnum).style.zIndex;
+					   }
+					   document.getElementById('design'+curnum).style.zIndex=tempindex;
+				   }
+				   break;
+			   }
+		   }
+	   }
+   }
+   //模版切换
+   function switchmod(obj,color){
+	   moduletype=obj;
+	   bgurl[0]='clothimg/front'+obj+color+'.png';
+	   $('#backimg').attr('src',bgurl[0]);
+   }
+   //正背面切换
+   function turnback(){
+	   if(backflag){//如果是当前背面，转为正面
+		   backflag=0;
+		   for(var k=3;k<6;k++){
+			   document.getElementById('design'+k).style.display='none';
+			   document.getElementById('word'+k).style.display='none';
+		   }
+		   for(var k=0;k<3;k++){
+			   if(flag[k]){
+				   document.getElementById('design'+k).style.display='block';
+			   }
+			   if(wflag[k]){
+				   document.getElementById('word'+k).style.display='block';
+			   }
+		   }
+		   $('#designbox').css({'background-image':"url("+bgurl[0]+")"});
+		   $('#turnback').val('背面设计');
+	   }else{
+		   backflag=1;
+		   for(var k=0;k<3;k++){
+			   document.getElementById('design'+k).style.display='none';
+			   document.getElementById('word'+k).style.display='none';
+		   }
+		   for(var k=3;k<6;k++){
+			   if(flag[k]){
+				   document.getElementById('design'+k).style.display='block';
+			   }
+			   if(wflag[k]){
+				   document.getElementById('word'+k).style.display='block';
+			   }
+		   }
+		   $('#designbox').css({'background-image':"url("+bgurl[1]+")"});
+		   $('#turnback').val('正面设计');
+	   }
+   }
+   //预览图片正背面切换
+   function next(obj){
+	   if(obj=='l'){ //转为正面
+		   $('#prev').css({'display':'block'});
+		   $('#back').css({'display':'none'});
+		   $('#learrow').css({'display':'none'});
+		   $('#riarrow').css({'display':'block'});
+		   $('#prevbox').css({'background-image':"url('images/front"+prevbackurl+".jpg')"});
+	   }else{
+		   $('#prev').css({'display':'none'});
+		   $('#back').css({'display':'block'});
+		   $('#learrow').css({'display':'block'});
+		   $('#riarrow').css({'display':'none'});
+		   $('#prevbox').css({'background-image':"url('images/back"+prevbackurl+".jpg')"});
+	   }
+   }
+   
+   //新浪微博分享
+   function forward_sinaweibo(src) {
+	   src=$.trim(src.replace("./",""));
+	   var title = encodeURI('印迹DIY设计');
+       var _url = encodeURIComponent('http://www.yinjitee.com/personal.php?personid='+'<?php echo $_smarty_tpl->getVariable('id')->value;?>
+');//获取当前页面url
+       var _assname = encodeURI('name');
+       var _appkey = encodeURI('appkey');
+       var _pic = encodeURI('http://121.199.17.222/'+src);
+	   //var _pic = encodeURI('http://121.199.17.222/img/主页1.png');
+       var _site = '';
+       var _u = 'http://v.t.sina.com.cn/share/share.php?url=' + _url + '&appkey=' + _appkey + '&site=' + _site + '&pic=' + _pic + '&title=' + title + '&assname=' + _assname;
+       window.open(_u, '', 'width=700, height=580, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no');
+   }
+   
+   //打开美图秀秀
+   function openxiu(){
+        var picpath=$('#p'+curnum).attr('src');
+		if(picpath.indexOf("http") < 0 ){  //检测 图片路径，为了兼容 ie6 等低级版本
+			picpath="http://121.199.17.222/"+picpath;
+		}
+	    $('#xiuxiu').css({'display':'block'});
+		xiuxiu.setLaunchVars("customMenu", "%5B%22decorate%22%2C%22facialMenu%22%5D");
+		xiuxiu.embedSWF("altContent",3,"100%","100%");
+		   /*第1个参数是加载编辑器div容器，第2个参数是编辑器类型，第3个参数是div容器宽，第4个参数是div容器高*/
+		//xiuxiu.setUploadURL("http://localhost:8080/stampnew/image_upload_form.php");//修改为您自己的上传接收图片程序
+		xiuxiu.setUploadURL("http://121.199.17.222/image_upload_form.php");//修改为您自己的上传接收图片程序
+		xiuxiu.setUploadType(2);
+		xiuxiu.onInit = function ()
+		{
+			xiuxiu.loadPhoto(picpath);
+		}	
+		xiuxiu.onUploadResponse = function (data)
+		{
+			$('#p'+curnum).attr('src',data);
+			clearFlash()
+			//alert("上传响应" + data);  //可以开启调试
+		}
+		xiuxiu.onDebug = function (data){alert("错误响应" + data);}
+	}
+	
+	//关闭美图秀秀
+	function clearFlash(){
+		$("#xiuxiu").html('<img id="closepic" src="img/close.png" onclick="clearFlash()" /><div id="altContent"></div>').css({'display':'none'});
+    }
+	
+	//屏幕清除
+	function clearBorder(){
+		$('.imgp').css('border',0);
+		$('#imgbox .word').css('border',0);
+		$('#designword').css({'display':'none'});
+	    for(var n=0;n<dragse.length;n++){
+		    for(var mm=0;mm<4;mm++){
+			    dragse[n][mm].style.display='none';
+		    }
+	    }
+    }
+    //重新设计
+	function rePaint(){
+		for(var i=0;i<6;i++){
+			flag[i]=0;
+			$("#design"+i).css({'display':'none'}); 
+			wflag[i]=0;
+			$("#word"+i).css({'display':'none'}); 
+		}
+	}
+	
+	//打开上传控件或者保存控件
+	function chooseUp(obj,picid){
+		
+		if(obj=='share'){
+			var temp="2013082398257552";
+			//var temp='<?php echo $_smarty_tpl->getVariable('id')->value;?>
+';  //获取作者 id
+			var headpic='<?php echo $_smarty_tpl->getVariable('headpic')->value;?>
+';  //获取作者头像
+			var name='<?php echo $_smarty_tpl->getVariable('name')->value;?>
+';  //获取作者姓名
+			var path ="./person/"+temp.substring(0,4)+"/"+temp.substring(4,6)+"/"+temp+"/";  //这个str就是截取的值
+			var title=$('#titleInput').val();
+			var cont=$('#contInput').val();
+			var ifshare=$('#savebox .input .sharetype:eq(0)').attr("alt"); //判断是否要分享到该乐
+            
+			if($('#savebox .input .sharetype:eq(1)').attr("alt")==1){alert(path);
+				//forward_sinaweibo("person/temp/whole/"+picid+".jpg");
+			}
+			$.post("galary.php?type=share",{'picid':picid,'path':path,'name':name,'id':temp,'headpic':headpic,'title':title,'cont':cont,'ifshare':ifshare},function(data){
+				$('#savebox').hide('slow');
+				$('#guidebox').show();
+		    });
+		}else if(obj=='shop'){
+			if($.cookie('buycar')){
+			   var buys=$.cookie('buycar').split('@@');
+			   $('#clothnum').html(buys.length);  //获取衣服订单数
+			}
+			$('#buybox').show('slow');
+		}
+	}
+
+	//关闭上传控件或者保存控件
+	function clearUp(obj){
+		$('.main').css({"opacity":"1"});
+		$(obj).hide('slow');
+	}
+	
+	//保存作品的提示文字显示
+	function showtext(obj){
+		if(obj=='1'){
+			if($('#titleInput').val()==''){
+				$('#titleInput').val('标题');
+			}
+		}else{
+			if($('#contInput').val()==''){
+			    $('#contInput').val('请在此输入作品介绍');
+			}
+		}
+	}
+	//保存作品的提示文字消失
+	function distext(obj){
+		if(obj=='1'){
+			if($('#titleInput').val()=='标题'){
+			    $('#titleInput').val('');
+			}
+		}else{
+			if($('#contInput').val()=='请在此输入作品介绍'){
+				$('#contInput').val('');
+			}
+		}
+	}
+	//将衣服放进  cookie里
+	function buycar(src){
+		if($.cookie('buycar')){  //如果不为空，则往里边写数据
+			$.cookie('buycar',$.cookie('buycar')+'@@'+$.trim(src));
+			$.cookie('buycarnum',$.cookie('buycarnum')+'@@'+1);
+		}else{
+			$.cookie('buycar',$.trim(src));
+			$.cookie('buycarnum',1);
+		}
+	}
+	
+</script>
+
+</head>
+
+<body>
+   <!--  第一部分  -->
+   <div id="head">
+       <div>
+           <div style="margin-left:20px; line-height:50px; position:absolute;">
+               <a href="http://www.yinjitee.com/show.php" style="color:#EEE; font-size:14px; float:left">该乐</a><img style="float:left" src="img/split.png" />
+               <a href="http://www.yinjitee.com/class.php" style="color:#EEE; font-size:14px; float:left">学堂</a><img style="float:left" src="img/split.png" />
+           </div>
+           <div style="right:0px; position:absolute;">
+               <div style="margin-top:25px; float:left">
+                   <a href="#" style="color:#FFF; font-weight:bold; font-size:16px;"><?php echo $_smarty_tpl->getVariable('name')->value;?>
+</a>
+               </div>
+               <span style="background:#FF4137; color:#FFF; line-height:20px; font-size:12px; float:left; margin-top:10px; margin-right:5px">&nbsp;7&nbsp;</span>
+               <a href="personal.php?personid=<?php echo $_smarty_tpl->getVariable('personid')->value;?>
+"><img src="<?php echo $_smarty_tpl->getVariable('headpic')->value;?>
+" height="50" width="50"/></a>
+           </div>
+           <div align="center">
+               <a href="http://www.yinjitee.com/"><img src="img/headline logo.png" /></a>
+                
+         </div>
+       </div>
+   </div>
+   <div class="space"></div>
+   <!--  第二部分  主题部分-->
+   <div class="main">
+       <!--  第二部分  1  选项卡选择-->
+       <div class="tab">
+           <div class="box01">选择款式</div>
+           <div class="box01">使用素材</div>
+           <div class="box01">上传图片</div>
+           <div class="box01" onclick="addword()">添加文字</div>
+           <div class="box02">
+              <div class="box03"  style="background:#1CBC9B" align="center" onclick="save('share')">分享</div>
+               <div class="box03" style="background:#F39C12" align="center" onclick="preview()">预览</div>
+               <div class="box03" style="background:#3896D6" align="center" onclick="rePaint()">重做</div>
+               <div class="box03" style="background:#34495e" align="center" onclick="save('save')">保存</div>
+
+           </div>
+       </div>
+           
+       <!--  第二部分  2  衣服设计-->
+       <div class="designbox" id="designbox" oncontextmenu="return false">
+          <img id="backimg" width="573" src="clothimg/front1white.png" style="position:absolute; left:0px; margin-top:20px" />
+          <div id="imgbox" >
+              <div id="design0" class="design" name="design">        
+                   <img class="imgp" id="p0" name="p" src="images/t1.jpg" width="175" height="200">    
+                   <div name="dragse0" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse0" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse0" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse0" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="design1" class="design" name="design">    
+                   <img class="imgp" id="p1" name="p" src="images/t2.jpg" width="175" height="200">    
+                   <div name="dragse1" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse1" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse1" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse1" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="design2" class="design" name="design">
+                   <img class="imgp" id="p2" name="p" src="images/t3.jpg" width="175" height="200"> 
+                   <div name="dragse2" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse2" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse2" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse2" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="word0" name="word" class="word">请输入文字</div>
+              <div id="word1" name="word" class="word">请输入文字</div>
+              <div id="word2" name="word" class="word">请输入文字</div>   
+              <!--         背面   -->
+              <div id="design3" class="design" name="design">        
+                   <img class="imgp" id="p3" name="p" src="images/t1.jpg" width="175" height="200">    
+                   <div name="dragse3" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse3" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse3" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse3" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="design4" class="design" name="design">    
+                   <img class="imgp" id="p4" name="p" src="images/t2.jpg" width="175" height="200">    
+                   <div name="dragse4" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse4" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse4" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse4" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="design5" class="design" name="design">
+                   <img class="imgp" id="p5" name="p" src="images/t3.jpg" width="175" height="200"> 
+                   <div name="dragse5" class="drag1" style="left:-5px; top:-5px"></div>
+                   <div name="dragse5" class="drag2" style="left:-5px; top:195px"></div>
+                   <div name="dragse5" class="drag3" style="left:170px; top:-5px"></div>     
+                   <div name="dragse5" class="drag4" style="left:170px; top:195px"></div>
+              </div>
+              <div id="word3" name="word" class="word">请输入文字</div>
+              <div id="word4" name="word" class="word">请输入文字</div>
+              <div id="word5" name="word" class="word">请输入文字</div>     
+          </div> 
+          <!--  设计图片  -->
+              <div id="designpic">
+                  <span><img width="65" src="img/upmove.png" onclick="move(1)"/></span>
+                  <span><img width="65" src="img/downmove.png" onclick="move(2)"/></span>
+                  <span><img width="50" src="img/edit.png" onclick="openxiu()"/></span>
+                  <span style="margin-right:0px"><img width="50" src="img/delete.png" onclick="deletebox()"/></span>
+              </div>
+          
+       </div>
+       
+       <!--  第四部分  衣服模版选择定制-->
+       <div class="bookCloth">
+           <div class="modelcur" name="white" style="background:#FFF; "></div>
+           <div class="model" name="black" style="background:#000; "></div>
+           <div class="model" name="" style="background:#36F; "></div>
+           <span class="size">
+               <input class="cur" type="button" value="S" />
+               <input type="button" value="M" />
+               <input type="button" value="L" />
+               <input type="button" value="XL" />
+               <input type="button" value="XXL" />
+           </span>
+           <span class="book" align="center" onclick="save('shop')">加入购物车</span>
+           <span class="price"><span>￥</span>50</span>
+       </div>
+       <!--  设计文字  -->
+              <div id="designword">  
+                  <label style="font-size:18px;">内容&nbsp;&nbsp;<input type="text" onblur="upword(this.value,'cont')" size="20"  /></label> 
+                  <input type="button" value="确定" />
+                  <hr style="border:1px #CCC solid" />
+                  <select name="family" onchange="upword(this.value,'family')" style="height:21px">
+                      <option style="font-family:'微软雅黑'" value="微软雅黑">微软雅黑</option>
+                      <option style="font-family:'serif'" value="serif">微软雅黑</option>
+                      <option style="font-family:'宋体'" value="宋体">微软雅黑</option>
+                  </select>
+                  <select name="size" onchange="upword(this.value,'size')" style="height:21px">
+                      <option value="16px">16px</option>
+                      <option value="24px">24px</option>
+                      <option value="30px">30px</option>
+                  </select>
+                  <input class="color" size="6" value="c90" style="cursor:pointer" onchange="upword(this.value,'color')">
+                  <label style="font-weight:bold; cursor:pointer" onclick="upword(this,'weight')">B</label>
+                  <label style="float:right; color:#444; margin-right:5px; margin-top:2px; font-size:14px; cursor:pointer;" title="关闭" onclick="closeword()">X</label>
+              </div>
+              
+              
+           <!--  第三部分  独立  1  选择款式-->
+       <div class="leftbox" id="chooseStyle">
+           <div class="box01">选择款式</div>
+           <div class="box02">
+               <div class="myboard"><img width="100%" src="clothimg/front1white.png"  onclick="switchmod(1,'white')" /></div>
+               <div class="myboard"><img width="100%" src="clothimg/front2black.png"  onclick="switchmod(2,'black')" /></div>
+			   <div class="myboard"><img width="100%" src="clothimg/front3lightgreen.png" onclick="switchmod(3,'lightgreen')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front4red.png" onclick="switchmod(4,'red')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front5blue.png" onclick="switchmod(5,'blue')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front6blue.png" onclick="switchmod(6,'blue')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front7brown.png" onclick="switchmod(7,'brown')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front13grey.png" onclick="switchmod(13,'grey')"/></div>
+               <div class="myboard"><img width="100%" src="clothimg/front15red.png" onclick="switchmod(15,'red')"/></div>
+            </div>
+       </div>
+       <!--  第三部分  独立  2  素材堆放-->
+       <div class="leftbox" id="element" style="display:none">
+           <div class="box01">使用该乐素材</div>
+           <div class="box01">
+               <select onchange="pageElement(1,this)" id="classic" style="width:99%">
+               </select>
+           </div>
+           <div class="box02">
+           </div>
+           <div class="box02">
+               <div class="box03" onclick="pageElement(0,'')">上一页</div>
+               <div class="box03" align="center"></div>
+               <div class="box03" align="right" onclick="pageElement(1,'')">下一页</div>
+           </div>
+           <div class="detail" id="detail">
+                <div><span style="color:#09F; font-size:18px; font-family:'微软雅黑'"></span></div>
+                <div align="center" style="margin-bottom:10px;"><img src="" width="200" /></div>
+                <div style="color:#AAA; font-size:14px; font-weight:bold;">设计：<span style="color:#000; font-weight:normal"></span></div>
+                <div style="color:#AAA; font-size:14px; font-weight:bold;">说明：<span style="color:#000; font-weight:normal"></span></div>
+           </div>
+           <!-- 素材上传 -->
+          
+           <div id="status"></div>  <!-- 返回自定义图片 -->
+       </div>
+       
+       <!--  第三部分  独立  3  素材上传-->
+       <div class="leftbox" id="upElement" style="display:none">
+           <div class="box01">我的素材</div>
+           <!-- 素材上传 -->
+           <div class="box01">
+               <form id="uploadMaterial" action="upload.php" method="post" enctype="multipart/form-data"> 
+                    <input type="file" id="myfile"  name="myfile" style="width:160px;" title="上传文件"  />
+               </form>
+           </div>
+           <div class="box02">
+           </div>
+           <div id="status"></div>  <!-- 返回自定义图片 -->
+       </div>
+       
+   </div>
+   
+   <!--  第六部分  美图秀秀-->
+   <div id="xiuxiu">
+       <img id="closepic" src="img/close.png" onclick="clearFlash()" />
+       <div id="altContent">
+       </div>
+   </div>
+          
+   <!-- 第八部分  展示已设计的衣服-->
+   <div id="prevbox" style="width:630px; height:630px;  top:110px; left:50%; margin-left:-315px; position:absolute; z-index:2100; display:none"  onclick="fadeout()">
+       <img width="630" src="clothimg/front2black.png" style="position:absolute; left:0px; margin-top:-20px;" />
+       <!--<div id="learrow" style="background:url(img/left.png) no-repeat; position:absolute; left:0%; top:230px; width:30px; height:100px; cursor:pointer" onmouseover="next('l')"></div>-->
+       <div id="prev" style="width:220px; height:360px; margin-top:130px; margin-left:auto; margin-right:auto; overflow:hidden; position:relative">
+       </div>
+       <div id="back" style="width:220px; height:360px; margin-top:130px; margin-left:auto; margin-right:auto; overflow:hidden; display:none; position:relative">
+       </div>
+       <!--<div id="riarrow" style="background:url(img/right.png) no-repeat; position:absolute; right:0%; top:230px; width:30px; height:100px; cursor:pointer" onmouseover="next('r')"></div>-->
+   </div>
+   
+   <!-- 第九部分  衣服保存-->
+   <div id="savebox" class="savebox">
+           <span style="float:right; font-size:24px; line-height:30px; margin-right:20px; cursor:pointer" onclick="clearUp('#savebox')">&times;</span>
+       <div class="input">
+           <input type="text" id="titleInput" style="margin-bottom:10px; font-size:16px; font-weight:bold; color:#888; width:200px; line-height:30px;" value="标题" onblur="showtext('1')" onclick="distext('1')"/>
+           <br />
+           <textarea id="contInput" style="margin-bottom:10px; font-size:16px; font-weight:bold; color:#888; width:100%; line-height:30px; height:120px" onblur="showtext('2')" onclick="distext('2')">请在此输入作品介绍</textarea>
+       </div>   
+       <div class="input">
+           <div>该乐</div><img class="sharetype" alt="1" src="img/on.png" />
+           <div>新浪微博</div><img class="sharetype" alt="1" src="img/on.png" />
+       </div>
+       <div class="button" style="width:100%; height:40px; line-height:40px; clear:both; background:#1BBC9B; color:#FFF; font-weight:bold; margin-top:5px" align="center"><a>分享&nbsp;&nbsp;SHARE</a></div>
+   </div>
+   
+   <!-- 第十部分  衣服下订-->
+   <div id="buybox">
+       <div class="close" align="center" onclick="clearUp('#buybox')">&times;</div>
+       <div class="box01">已加入购物车</div>
+       <div class="box02">购物车中有<span id="clothnum">1</span>件商品</div>
+       <span class="box03"><a href="./check.php" target="_blank">结算</a></span>
+       <span class="box04" onclick="save('shop',0)">继续设计</span>
+   </div>
+   
+   <!-- 第十一部分  保存后的指引-->
+   <div id="guidebox" align="center">
+           <span style="float:right; font-size:24px; line-height:30px; margin-right:20px; cursor:pointer" onclick="clearUp('#guidebox')">&times;</span>
+       <div style="clear:both; font-size:20px; color:#34495E">
+           接下来你想去哪里
+       </div>   
+       <div class="input">
+           <div class="button" onclick="clearUp('#guidebox')">继续设计</div>
+           <div class="button"><a href="./show.php?order=all" target="_blank">去该乐看看</a></div>
+           <div class="button"><a href="./personal.php?personid=<?php echo $_smarty_tpl->getVariable('id')->value;?>
+" target="_blank">去个人主页</a></div>
+       </div>
+   </div>
+   
+<div class="main1">
+   <div class="clothinfo">
+           <div class="box10" id="x1" style="color:white;" onmouseover="qiehuan(1)"><img src="img/衣服细节.png" width="101" height="26" /></div>
+           <div class="box10" id="x2" style="color:white;" onmouseover="qiehuan(2)"><img src="img/尺码说明.png" width="98" height="26" /></div>
+           <div class="box10" id="x3" style="color:white;" onmouseover="qiehuan(3)"><img src="img/印刷技术.png" width="97" height="26" /></div>
+           <div class="box10" id="x4" style="color:white;" onmouseover="qiehuan(4)"><img src="img/洗涤说明.png" width="101" height="26" /></div>
+   </div>
+   
+   
+<div class="xiangxi" id="left1" style="height:793px; width:981px;">
+           
+           <div class="box01"><img src="img/xijie.png" width="981" height="793" /></div>
+   </div>
+   
+   <div class="xiangxi" id="left2" style="display:none; width:575px; height:627px;">
+           
+           <div class="box01"><img src="img/尺码.png" width="575" height="627" /></div>
+   </div>
+   
+   <div class="xiangxi" id="left3" style="display:none; background:#f1f1f1; width:916px; height:137px;" >
+           
+           <div class="box01"><img src="img/介绍.png" width="916" height="137" /></div>
+   </div>
+   
+   <div class="xiangxi" id="left4" style="display:none; width:800px; height:308px">
+           
+           <div class="box01"><img src="img/洗涤.png" width="750" height="308" /></div>
+   </div>
+</div>
+   <script type="text/javascript">
+ function qiehuan(i){
+	               
+			      $('.clothinfo .box10').each(function(){
+					   $(this).css('borderColor','#EEE');
+				   });   
+				   //$('.xiangxi').each(function(){
+					//   $(this).hide('slow');
+				  // });   
+				   $('.xiangxi').hide('slow');
+				   $('#x'+i+'').css('borderColor','#F39C12');
+				   $('#left'+i+'').show('slow');
+			
+			}
+</script>
+</body>
+</html>
